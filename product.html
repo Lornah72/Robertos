@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="product.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body class="bg-beige p-4 font-sans">
+
+    <section class="full-navbar">
+
+  <!-- Top Navbar -->
+  <div class="top-navbar">
+    <!-- Left logo -->
+    <div class="logo-area">
+      <img src="robertoslogo.png" alt="">
+      <div class="nav-links switch-buttons">
+        <button class="market-btn active" onclick="toggleMode('market')">Market</button>
+        <button onclick="toggleMode('restaurant')">Restaurant</button>
+      </div>
+    </div>
+
+    <!-- Right Search and Icons -->
+    <div class="search-icons">
+      <div class="search-box">
+        <input type="text" placeholder="Search" />
+        <i class="fas fa-search"></i>
+      </div>
+      <i class="fas fa-cart-shopping icon"></i>
+      <i class="fas fa-user icon"></i>
+    </div>
+  </div>
+
+  <!-- Product Navbar -->
+  <div class="product-navbar">
+    <a href="#">Cellar</a>
+    <a href="#">Cheeses</a>
+    <a href="#">Cold Cuts</a>
+    <a href="#">Dry goods</a>
+    <a href="#">Machinery</a>
+    <a href="#">Cutlery</a>
+    <a href="#">Detergents</a>
+  </div>
+  
+  </section>
+  
+  <script>
+    function toggleMode(mode) {
+      const buttons = document.querySelectorAll(".switch-buttons button");
+      buttons.forEach(btn => btn.classList.remove("active"));
+      if (mode === 'market') {
+        buttons[0].classList.add("active");
+      } else {
+        buttons[1].classList.add("active");
+      }
+    }
+  </script>
+  <script>
+  const cartIcon = document.querySelector('.fa-cart-shopping');
+  const body = document.body;
+
+  // Cart storage
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  // Add cart UI to page
+  const cartPanel = document.createElement('div');
+  cartPanel.className = 'cart-panel';
+  cartPanel.innerHTML = `
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="cart-close" onclick="cartPanel.classList.remove('open')">&times;</button>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-total">
+      <span>Total:</span><span id="cart-total-price">Ksh 0</span>
+    </div>
+    <div class="cart-actions">
+      <a href="cart.html" class="view-cart-btn">View Cart</a>
+    </div>
+  `;
+  body.appendChild(cartPanel);
+
+  // Create cart count badge
+  const cartWrapper = document.createElement('div');
+  cartWrapper.className = 'cart-wrapper';
+  cartIcon.parentNode.insertBefore(cartWrapper, cartIcon);
+  cartWrapper.appendChild(cartIcon);
+
+  const cartCount = document.createElement('div');
+  cartCount.className = 'cart-count';
+  cartWrapper.appendChild(cartCount);
+
+  // Render cart icon count
+  function updateCartCount() {
+    cartCount.textContent = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  }
+
+  // Render cart items
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    const totalPriceEl = document.getElementById('cart-total-price');
+    container.innerHTML = '';
+    let total = 0;
+
+    cartItems.forEach(item => {
+      const itemTotal = item.price * item.qty;
+      total += itemTotal;
+
+      const itemEl = document.createElement('div');
+      itemEl.className = 'cart-item';
+      itemEl.innerHTML = `
+        <img src="${item.img}" alt="${item.name}">
+        <div class="cart-item-details">
+          <h4>${item.name}</h4>
+          <div class="quantity">
+            <button onclick="updateQty('${item.name}', -1)">?</button>
+            <span>${item.qty}</span>
+            <button onclick="updateQty('${item.name}', 1)">+</button>
+          </div>
+          <span class="item-subtotal">Ksh ${itemTotal}</span>
+        </div>
+        <button class="remove-item" onclick="removeFromCart('${item.name}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(itemEl);
+    });
+
+    totalPriceEl.textContent = `Ksh ${total}`;
+  }
+
+  // Quantity update
+  function updateQty(name, delta) {
+    const item = cartItems.find(item => item.name === name);
+    if (item) {
+      item.qty += delta;
+      if (item.qty < 1) item.qty = 1;
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      updateCartCount();
+      renderCart();
+    }
+  }
+
+  // Remove item
+  function removeFromCart(name) {
+    cartItems = cartItems.filter(item => item.name !== name);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    updateCartCount();
+    renderCart();
+  }
+
+  // Add to cart
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.add-btn')) {
+      const card = e.target.closest('.product-card, .carousel-item');
+      const name = card.querySelector('h3').innerText;
+      const price = parseInt(card.querySelector('.price-row span').innerText.replace('Ksh ', ''));
+      const img = card.querySelector('img').src;
+
+      const existing = cartItems.find(item => item.name === name);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({ name, price, img, qty: 1 });
+      }
+
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      updateCartCount();
+      renderCart();
+    }
+  });
+
+  // Toggle cart visibility
+  cartIcon.addEventListener('click', () => {
+    cartPanel.classList.toggle('open');
+    renderCart();
+  });
+
+  // Clicking outside closes the cart
+  document.addEventListener('click', function (e) {
+    if (!cartPanel.contains(e.target) && !cartIcon.contains(e.target)) {
+      cartPanel.classList.remove('open');
+    }
+  });
+
+  // Init on load
+  window.addEventListener('DOMContentLoaded', () => {
+    updateCartCount();
+    renderCart();
+  });
+</script>
+  <div class="max-w-7xl mx-auto">
+    <p class="breadcrumb">Home > Product > <span id="product-name-breadcrumb">...</span></p>
+
+    <div class="product-section">
+      <img id="product-image" class="w-full max-h-[400px] object-contain rounded-lg shadow" alt="Product Image" />
+
+      <div class="product-details">
+        <h1 id="product-name">Product Name</h1>
+        <div class="product-price">KES <span id="product-price">0.00</span></div>
+        <div id="product-description" class="product-description">Description...</div>
+        <button id="add-to-cart-btn" class="add-to-cart">
+          <i class="fas fa-cart-shopping"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <h2 class="similar-title">You may also like</h2>
+    <div class="similar-products">
+      <div id="related-products" class="product-card"></div>
+    </div>
+  </div>
+
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://hdukbuwmezqyxzsqgqff.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo'
+  );
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('id');
+
+  let loadedProduct = null;
+
+  async function loadProduct() {
+    const { data: product, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', productId)
+      .single();
+
+    if (error || !product) {
+      alert('Product not found');
+      return;
+    }
+
+    document.getElementById('product-image').src = product.image_url;
+    document.getElementById('product-name').textContent = product.name;
+    document.getElementById('product-name-breadcrumb').textContent = product.name;
+    document.getElementById('product-price').textContent = product.retail_price;
+    document.getElementById('product-description').textContent = product.description || 'No description.';
+
+    loadedProduct = product;
+  }
+
+  function updateCartUI() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const cartCounter = document.querySelector(".cart-counter");
+    if (cartCounter) {
+      cartCounter.textContent = cartCount;
+    }
+  }
+
+  function addToCart() {
+    if (!loadedProduct) return;
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const index = cart.findIndex(item => item.id === loadedProduct.id);
+
+    if (index !== -1) {
+      cart[index].quantity += 1;
+    } else {
+      cart.push({
+        id: loadedProduct.id,
+        name: loadedProduct.name,
+        image_url: loadedProduct.image_url,
+        price: loadedProduct.retail_price,
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartUI();
+    alert(`${loadedProduct.name} added to cart.`);
+  }
+
+  async function loadRelated() {
+    const { data, error } = await supabase
+      .from('products')
+      .select('id, name, image_url, retail_price')
+      .neq('id', productId)
+      .limit(4);
+
+    const container = document.getElementById('related-products');
+    container.innerHTML = '';
+
+    data.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'product-card-item';
+      card.innerHTML = `
+        <a href="product.html?id=${prod.id}" style="text-decoration:none;color:inherit;">
+          <img src="${prod.image_url}" alt="${prod.name}" />
+          <h4>${prod.name}</h4>
+          <p>Ksh ${prod.retail_price}</p>
+        </a>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  document.getElementById("add-to-cart-btn").addEventListener("click", addToCart);
+
+  window.addEventListener("DOMContentLoaded", () => {
+    loadProduct();
+    loadRelated();
+    updateCartUI();
+  });
+</script>
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h4>ABOUT</h4>
+      <ul>
+        <li><a href="#">Company</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>BLOG</h4>
+      <ul>
+        <li><a href="#">Taste</a></li>
+        <li><a href="#">Adventures</a></li>
+        <li><a href="#">Wine</a></li>
+        <li><a href="#">Values</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>PRODUCTS</h4>
+      <ul>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Partner With Us</a></li>
+        <li><a href="#">Delivery Email</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section logo-social">
+      <img src="robertoslogo.png" alt="Roberto's Logo" />
+      <p>Authentic Italian Taste</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>48 Roberto Ave, Nairobi, KE 00400</p>
+    <p>© 2025 Roberto?s. All rights reserved</p>
+  </div>
+</footer>
+
+</body>
+</html>

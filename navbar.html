@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roberto's Market</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+  
+   <style>
+    .full-navbar{
+      position: fixed;
+      width: 100%;
+    }
+    /* Top section */
+    .top-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 40px;
+      background-color: white;
+    }
+
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-area img
+    {
+      height: 60px;
+    }
+
+    .logo-area small {
+      font-size: 14px;
+      color: #3d1b1b;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-top: 5px;
+    }
+
+
+    .nav-links span {
+      color: #3d1b1b;
+      font-size: 15px;
+    }
+
+    .search-icons {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .search-box {
+      background-color: #f5ecda;
+      padding: 7px 15px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      outline: none;
+      width: 800px;
+      color: #555;
+    }
+
+    .search-box i {
+      color: #3d1b1b;
+      font-size: 16px;
+    }
+
+    .icon {
+      font-size: 20px;
+      color: #3d1b1b;
+      cursor: pointer;
+    }
+
+    /* Bottom maroon product nav */
+    .product-navbar {
+      background-color: #4b121d;
+      padding: 12px 250px;
+      display: flex;
+      gap: 35px;
+    }
+
+    .product-navbar a {
+      color: #f5ecda;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .product-navbar a:hover {
+      text-decoration: underline;
+    }
+     .switch-buttons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .switch-buttons button {
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      color: #3d1b1b;
+      cursor: pointer;
+      padding: 6px 18px;
+      border-radius: 20px;
+    }
+
+    .switch-buttons .active {
+      background-color: #3d1b1b;
+      color: white;
+    }
+    
+
+   </style>
+
+</head>
+<body>
+    <!-- navbar.html -->
+<section class="full-navbar">
+  <div class="top-navbar">
+    <div class="logo-area">
+      <img src="robertoslogo.png" alt="Roberto's Logo">
+      <div class="nav-links switch-buttons">
+        <button class="market-btn active" onclick="toggleMode('market')">Market</button>
+        <button onclick="toggleMode('restaurant')">Restaurant</button>
+      </div>
+    </div>
+    <div class="search-icons">
+      <div class="search-box">
+        <input type="text" placeholder="Search" />
+        <i class="fas fa-search"></i>
+      </div>
+      <div class="cart-wrapper">
+        <i class="fas fa-cart-shopping icon"></i>
+        <div class="cart-count">0</div>
+      </div>
+      <i class="fas fa-user icon"></i>
+    </div>
+  </div>
+  <div class="product-navbar">
+    <a href="#">Cellar</a>
+    <a href="#">Cheeses</a>
+    <a href="#">Cold Cuts</a>
+    <a href="#">Dry goods</a>
+    <a href="#">Machinery</a>
+    <a href="#">Cutlery</a>
+    <a href="#">Detergents</a>
+  </div>
+</section>
+
+<!-- Cart Panel -->
+<div class="cart-panel">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="cart-close" onclick="document.querySelector('.cart-panel').classList.remove('open')">&times;</button>
+  </div>
+  <div id="cart-items"></div>
+  <div class="cart-total">
+    <span>Total:</span><span id="cart-total-price">Ksh 0</span>
+  </div>
+  <div class="cart-actions">
+    <a href="cart.html" class="view-cart-btn">View Cart</a>
+  </div>
+</div>
+
+<script>
+  function toggleMode(mode) {
+    const buttons = document.querySelectorAll(".switch-buttons button");
+    buttons.forEach(btn => btn.classList.remove("active"));
+    if (mode === 'market') {
+      buttons[0].classList.add("active");
+    } else {
+      buttons[1].classList.add("active");
+    }
+  }
+
+  // Cart Logic
+  const cartIcon = document.querySelector('.fa-cart-shopping');
+  const cartPanel = document.querySelector('.cart-panel');
+  const cartCount = document.querySelector('.cart-count');
+  let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  function updateCartCount() {
+    cartCount.textContent = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    const totalPriceEl = document.getElementById('cart-total-price');
+    container.innerHTML = '';
+    let total = 0;
+
+    cartItems.forEach(item => {
+      const itemTotal = item.price * item.qty;
+      total += itemTotal;
+      const itemEl = document.createElement('div');
+      itemEl.className = 'cart-item';
+      itemEl.innerHTML = `
+        <img src="${item.img}" alt="${item.name}">
+        <div class="cart-item-details">
+          <h4>${item.name}</h4>
+          <div class="quantity">
+            <button onclick="updateQty('${item.name}', -1)">–</button>
+            <span>${item.qty}</span>
+            <button onclick="updateQty('${item.name}', 1)">+</button>
+          </div>
+          <span class="item-subtotal">Ksh ${itemTotal}</span>
+        </div>
+        <button class="remove-item" onclick="removeFromCart('${item.name}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(itemEl);
+    });
+
+    totalPriceEl.textContent = `Ksh ${total}`;
+  }
+
+  function updateQty(name, delta) {
+    const item = cartItems.find(item => item.name === name);
+    if (item) {
+      item.qty += delta;
+      if (item.qty < 1) item.qty = 1;
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      updateCartCount();
+      renderCart();
+    }
+  }
+
+  function removeFromCart(name) {
+    cartItems = cartItems.filter(item => item.name !== name);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    updateCartCount();
+    renderCart();
+  }
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.add-btn')) {
+      const card = e.target.closest('.product-card, .carousel-item');
+      const name = card.querySelector('h3').innerText;
+      const price = parseInt(card.querySelector('.price-row span').innerText.replace('Ksh ', ''));
+      const img = card.querySelector('img').src;
+
+      const existing = cartItems.find(item => item.name === name);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({ name, price, img, qty: 1 });
+      }
+
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      updateCartCount();
+      renderCart();
+    }
+  });
+
+  cartIcon.addEventListener('click', () => {
+    cartPanel.classList.toggle('open');
+    renderCart();
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!cartPanel.contains(e.target) && !cartIcon.contains(e.target)) {
+      cartPanel.classList.remove('open');
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    updateCartCount();
+    renderCart();
+  });
+</script>
+
+</body>
+</html>

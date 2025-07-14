@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - Roberto</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5ecda;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      padding: 30px;
+      gap: 30px;
+    }
+    .items-section, .payment-section {
+      flex: 1;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .cart-info {
+      flex: 1;
+      margin-left: 15px;
+    }
+    .summary {
+      margin-top: 30px;
+      font-size: 16px;
+    }
+    .summary p {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .summary p strong {
+      font-weight: 600;
+    }
+    .payment-section h3 {
+      margin-bottom: 20px;
+    }
+    .cards img {
+      height: 32px;
+      margin-right: 10px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .pay-btn {
+      background: #3d1b1b;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left Side: Cart Items -->
+    <div class="items-section">
+      <h2>Items (2)</h2>
+      <div class="cart-item">
+        <img src="https://via.placeholder.com/60" alt="item">
+        <div class="cart-info">
+          <p><strong>GORGONZOLA DOLCE</strong></p>
+          <p>300g &mdash; Qty: 1</p>
+        </div>
+        <p><strong>Ksh 4100</strong></p>
+      </div>
+      <div class="cart-item">
+        <img src="https://via.placeholder.com/60" alt="item">
+        <div class="cart-info">
+          <p><strong>CHEDDAR MATURE</strong></p>
+          <p>250g &mdash; Qty: 2</p>
+        </div>
+        <p><strong>Ksh 2400</strong></p>
+      </div>
+      <div class="summary">
+        <p><span>Subtotal</span><span>Ksh 6500</span></p>
+        <p><span>Delivery</span><span>Ksh 300</span></p>
+        <p><strong>Total</strong><strong>Ksh 6800</strong></p>
+      </div>
+    </div>
+
+    <!-- Right Side: Payment -->
+    <div class="payment-section">
+      <h3>Checkout</h3>
+      <div class="cards">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="mastercard"/>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="visa"/>
+        <img src="m-pesa.png" alt="mpesa"/>
+      </div>
+      <div class="form-group">
+        <input type="text" placeholder="Cardholder Name"/>
+        <input type="text" placeholder="Card Number"/>
+        <input type="text" placeholder="Expiration Date (MM/YY)"/>
+        <input type="text" placeholder="CVC"/>
+      </div>
+      <button class="pay-btn">Pay Now (Dummy)</button>
+    </div>
+  </div>
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h4>ABOUT</h4>
+      <ul>
+        <li><a href="#">Company</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>BLOG</h4>
+      <ul>
+        <li><a href="#">Taste</a></li>
+        <li><a href="#">Adventures</a></li>
+        <li><a href="#">Wine</a></li>
+        <li><a href="#">Values</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>PRODUCTS</h4>
+      <ul>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Partner With Us</a></li>
+        <li><a href="#">Delivery Email</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section logo-social">
+      <img src="robertoslogo.png" alt="Roberto's Logo" />
+      <p>Authentic Italian Taste</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>48 Roberto Ave, Nairobi, KE 00400</p>
+    <p>© 2025 Roberto’s. All rights reserved</p>
+  </div>
+</footer>
+
+</body>
+</html>

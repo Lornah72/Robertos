@@ -1,0 +1,264 @@
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background-color: #f5ecda;
+  color: #3d1b1b;
+}
+
+/* Navbar */
+.cart-navbar {
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-logo img {
+  height: 55px;
+}
+
+.cart-links a {
+  color: #3d1b1b;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+/* Cart Layout */
+.cart-container {
+  padding: 40px;
+  max-width: 1080px;
+  margin: auto;
+}
+
+.cart-container h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.cart-content {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Cart Items Section */
+.cart-items {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-right: 1rem;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  background: #fff;
+  padding: 16px 20px;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  min-height: 120px;
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cart-item .details {
+  flex: 1;
+}
+
+.cart-item .details h2 {
+  margin: 0 0 5px;
+  font-size: 17px;
+}
+
+.cart-item .quantity {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.cart-item .quantity button {
+  width: 24px;
+  height: 24px;
+  background: #3d1b1b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.cart-item .quantity input {
+  width: 45px; /* 👈 This sets the width */
+  height: 24px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 0 5px;
+}
+
+
+/* Price and Remove */
+.cart-item .price {
+  font-weight: bold;
+  font-size: 16px;
+  min-width: 80px;
+  text-align: right;
+}
+
+.cart-item .remove {
+  background: none;
+  border: none;
+  color: darkred;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Cart Summary */
+.cart-summary {
+  flex: 1;
+  min-width: 260px;
+  max-height: 300px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: flex-start;
+}
+
+.cart-summary h2 {
+  margin-top: 0;
+}
+
+.cart-summary ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.cart-summary ul li {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.cart-summary ul li strong {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.checkout-btn {
+  background-color: #3d1b1b;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.checkout-btn:hover {
+  background-color: #592121;
+}
+
+/* Footer */
+.cart-footer {
+  text-align: center;
+  padding: 20px;
+  background: #fff;
+  color: #888;
+  font-size: 14px;
+  margin-top: 40px;
+}
+.site-footer {
+  background-color: #f8efe1;
+  padding: 2rem 3rem;
+  font-family: 'Georgia', serif;
+  color: #3d1b1b;
+  border-top: 1px solid #ddd;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-section h4 {
+  font-size: 16px;
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+  color: #3d1b1b;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 6px;
+}
+
+.footer-section ul li a {
+  color: #3d1b1b;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.logo-social img {
+  height: 50px;
+  margin-bottom: 0.5rem;
+}
+
+.logo-social p {
+  margin: 0.5rem 0;
+  font-size: 14px;
+}
+
+.social-icons a {
+  color: #3d1b1b;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.footer-bottom {
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+}
+
+.carousel-container a {
+  text-decoration: none;
+  color: inherit;
+}
+

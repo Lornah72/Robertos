@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - Roberto</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background-color: #fef9ef;
+      margin: 0;
+      padding: 2rem;
+    }
+    .checkout-container {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      padding: 30px;
+      display: flex;
+      gap: 30px;
+    }
+    .form-section, .summary-section {
+      flex: 1;
+    }
+    h2 {
+      font-size: 26px;
+      margin-bottom: 1rem;
+    }
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #edf3ff;
+    }
+    #map {
+      height: 300px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .btn {
+      background-color: #3d1b1b;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .summary-section {
+      border-left: 1px solid #ddd;
+      padding-left: 20px;
+    }
+    .summary-section p {
+      font-size: 16px;
+      margin: 12px 0;
+    }
+    .cart-list {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed #bbb;
+    }
+    .disclaimer {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      color: #856404;
+    }
+    .chosen-address {
+      font-size: 14px;
+      color: #555;
+      margin: 10px 0;
+      background: #f0f0f0;
+      padding: 8px;
+      border-radius: 5px;
+    }
+    .error-message {
+      color: #a94442;
+      background: #f2dede;
+      padding: 10px;
+      border: 1px solid #ebccd1;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    @media (max-width: 768px) {
+    .checkout-container {
+      flex-direction: column;
+      padding: 15px;
+    }
+    input{
+      width: 275px;
+    }
+    .summary-section {
+      border-left: none;
+      padding-left: 0;
+      margin-top: 30px;
+    }
+  }
+  </style>
+</head>
+<body>
+
+<div class="checkout-container">
+  <!-- Left: Form -->
+  <div class="form-section">
+    <h2>Checkout</h2>
+
+    <form id="checkout-form" action="payment.php" method="POST">
+      <div class="disclaimer">
+        We only deliver within <strong>Nairobi and Mombasa</strong> between <strong>10:00 AM - 7:00 PM</strong>. Orders placed after 7:00 PM will be delivered the next day.
+      </div>
+
+      <div id="error-box" class="error-message"></div>
+
+      <label>Full Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label>Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label>Phone</label>
+      <input type="tel" id="phone" name="phone" required />
+
+      <label>Search Delivery Location</label>
+      <input type="text" id="location-search" placeholder="Start typing your area..." required />
+
+      <div class="chosen-address" id="selected-address" style="display:none;"></div>
+
+      <div id="map"></div>
+
+      <input type="hidden" id="delivery-lat" name="delivery_lat" />
+      <input type="hidden" id="delivery-lng" name="delivery_lng" />
+      <input type="hidden" id="delivery-address" name="delivery_address" />
+
+      <input type="hidden" id="cart_json" name="cart_json" />
+      <input type="hidden" id="final_total" name="final_total" />
+    </form>
+  </div>
+
+  <!-- Right: Cart Summary -->
+  <div class="summary-section">
+    <h2>Cart Summary</h2>
+    <div class="cart-list" id="cart-list"></div>
+    <p><strong>Total Products:</strong> Ksh <span id="product-total">0</span></p>
+    <p><strong>Delivery Fee:</strong> Ksh <span id="fee">0</span></p>
+    <p><strong>Final Total:</strong> Ksh <span id="final-total">0</span></p>
+    <button type="submit" class="btn" form="checkout-form">Proceed to Payment</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const shopLocation = { lat: -1.286389, lng: 36.817223 }; 
+  let deliveryLocation = null;
+
+  const map = L.map('map').setView([shopLocation.lat, shopLocation.lng], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  const marker = L.marker([shopLocation.lat, shopLocation.lng]).addTo(map);
+
+  const locationSearchInput = document.getElementById('location-search');
+  const selectedAddressDiv = document.getElementById('selected-address');
+  const feeEl = document.getElementById('fee');
+  const finalTotalEl = document.getElementById('final-total');
+  const productTotalEl = document.getElementById('product-total');
+  const cartList = document.getElementById('cart-list');
+  const errorBox = document.getElementById('error-box');
+
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  let productTotal = 0;
+
+  cartItems.forEach(item => {
+    const itemTotal = item.price * item.qty;
+    productTotal += itemTotal;
+
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `<span>${item.name} x${item.qty}</span><span>Ksh ${itemTotal}</span>`;
+    cartList.appendChild(div);
+  });
+
+  productTotalEl.textContent = productTotal;
+  finalTotalEl.textContent = productTotal;
+
+  function computeDistance(from, to) {
+    const R = 6371;
+    const dLat = (to.lat - from.lat) * Math.PI / 180;
+    const dLon = (to.lng - from.lng) * Math.PI / 180;
+    const a = Math.sin(dLat/2) ** 2 +
+      Math.cos(from.lat * Math.PI/180) * Math.cos(to.lat * Math.PI/180) *
+      Math.sin(dLon/2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+      const data = await res.json();
+      const address = data.display_name;
+
+      locationSearchInput.value = address;
+      selectedAddressDiv.textContent = address;
+      selectedAddressDiv.style.display = "block";
+
+      deliveryLocation = { lat, lng: lon };
+      document.getElementById("delivery-lat").value = lat;
+      document.getElementById("delivery-lng").value = lon;
+      document.getElementById("delivery-address").value = address;
+
+      map.setView([lat, lon], 15);
+      marker.setLatLng([lat, lon]);
+
+      const dist = computeDistance(shopLocation, deliveryLocation).toFixed(2);
+      const fee = Math.ceil(dist / 5) * 50;
+      feeEl.textContent = fee;
+      finalTotalEl.textContent = productTotal + fee;
+    });
+  }
+
+  locationSearchInput.addEventListener("keypress", async (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const query = locationSearchInput.value;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.length > 0) {
+        const lat = parseFloat(data[0].lat);
+        const lon = parseFloat(data[0].lon);
+        const displayName = data[0].display_name;
+
+        deliveryLocation = { lat, lng: lon };
+        document.getElementById("delivery-lat").value = lat;
+        document.getElementById("delivery-lng").value = lon;
+        document.getElementById("delivery-address").value = displayName;
+
+        map.setView([lat, lon], 15);
+        marker.setLatLng([lat, lon]);
+
+        selectedAddressDiv.textContent = displayName;
+        selectedAddressDiv.style.display = "block";
+
+        const dist = computeDistance(shopLocation, deliveryLocation).toFixed(2);
+        const fee = Math.ceil(dist / 5) * 50;
+        feeEl.textContent = fee;
+        finalTotalEl.textContent = productTotal + fee;
+
+        errorBox.style.display = "none";
+      } else {
+        showError("Location not found. Please try another search.");
+      }
+    }
+  });
+
+  function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.style.display = "block";
+  }
+
+  document.getElementById('checkout-form').addEventListener('submit', (e) => {
+    const chosenAddress = selectedAddressDiv.textContent;
+    if (!deliveryLocation) {
+      showError("Please select a delivery location.");
+      e.preventDefault();
+      return;
+    }
+
+    if (!/nairobi|mombasa/i.test(chosenAddress)) {
+      showError("Sorry, we only deliver in Nairobi and Mombasa.");
+      e.preventDefault();
+      return;
+    }
+
+    document.getElementById("delivery-address").value = chosenAddress;
+    document.getElementById("cart_json").value = JSON.stringify(cartItems);
+    document.getElementById("final_total").value = finalTotalEl.textContent;
+
+    errorBox.style.display = "none";
+    // allow form to submit normally
+  });
+</script>
+
+
+
+</body>
+</html>

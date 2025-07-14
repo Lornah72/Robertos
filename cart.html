@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart – Roberto’s</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="cart.css" />
+  <style>
+  @media (max-width: 768px) {
+    .cart-content {
+      flex-direction: column-reverse;
+    }
+    .cart-summary {
+      width: 100%;
+      max-width: none;
+      margin-bottom: 30px;
+    }
+    .cart-items {
+      padding-right: 0;
+      max-height: none;
+    }
+    .cart-item {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .cart-item img {
+      width: 100%;
+      height: auto;
+      max-width: 200px;
+      margin-bottom: 10px;
+    }
+    .cart-item .price {
+      width: 100%;
+      text-align: left;
+      font-size: 18px;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+  <!-- Navbar Top -->
+  <header class="cart-navbar">
+    <div class="cart-logo">
+      <img src="robertoslogo.png" alt="Roberto's Logo">
+    </div>
+    <nav class="cart-links">
+      <a href="index.html"><i class="fas fa-home"></i> Continue Shopping</a>
+    </nav>
+  </header>
+
+  <!-- Main Cart Section -->
+  <main class="cart-container">
+    <h1>Your Cart</h1>
+
+    <div class="cart-content">
+      <!-- Cart Items -->
+      <section class="cart-items" id="cart-items-container"></section>
+
+      <!-- Cart Summary -->
+      <aside class="cart-summary">
+        <h2>Cart Totals</h2>
+        <ul>
+          <li><span>Subtotal</span><span id="cart-subtotal">Ksh 0</span></li>
+          <li><span>Shipping</span><span id="shipping-cost"></span></li>
+          <li><strong>Total</strong><strong id="total-price">Ksh 0</strong></li>
+        </ul>
+        <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+      </aside>
+    </div>
+  </main>
+
+
+  <script>
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const cartContainer = document.getElementById('cart-items-container');
+    const subtotalEl = document.getElementById('cart-subtotal');
+    const totalEl = document.getElementById('total-price');
+
+    function renderCart() {
+      cartContainer.innerHTML = '';
+      let subtotal = 0;
+
+      if (cartItems.length === 0) {
+        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+        subtotalEl.textContent = 'Ksh 0';
+        totalEl.textContent = 'Ksh 0';
+        return;
+      }
+
+      cartItems.forEach((item, index) => {
+        const itemTotal = item.price * item.qty;
+        subtotal += itemTotal;
+
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" />
+          <div class="details">
+            <h2>${item.name}</h2>
+            <p>
+              Qty:
+              <button onclick="updateQty(${index}, -1)">-</button>
+              <input type="number" value="${item.qty}" min="1" onchange="manualQty(${index}, this.value)" />
+
+              <button onclick="updateQty(${index}, 1)">+</button>
+            </p>
+          </div>
+          <div class="price">Ksh ${itemTotal}</div>
+          <button class="remove" onclick="removeItem(${index})">
+            <i class="fas fa-trash"></i>
+          </button>
+        `;
+        cartContainer.appendChild(div);
+      });
+
+      subtotalEl.textContent = `Ksh ${subtotal}`;
+      totalEl.textContent = `Ksh ${subtotal}`;
+    }
+
+    function updateQty(index, delta) {
+      cartItems[index].qty += delta;
+      if (cartItems[index].qty < 1) cartItems[index].qty = 1;
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      renderCart();
+    }
+
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      renderCart();
+    }
+
+    function checkout() {
+      window.location.href = 'checkout.html'; // Link to checkout page
+    }
+
+    window.addEventListener('DOMContentLoaded', renderCart);
+    function manualQty(index, value) {
+  const qty = parseInt(value, 10);
+  if (qty >= 1) {
+    cartItems[index].qty = qty;
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    renderCart();
+  } else {
+    // optionally handle invalid input
+    cartItems[index].qty = 1;
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    renderCart();
+  }
+}
+
+  </script>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h4>ABOUT</h4>
+      <ul>
+        <li><a href="#">Company</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>BLOG</h4>
+      <ul>
+        <li><a href="#">Taste</a></li>
+        <li><a href="#">Adventures</a></li>
+        <li><a href="#">Wine</a></li>
+        <li><a href="#">Values</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>PRODUCTS</h4>
+      <ul>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Partner With Us</a></li>
+        <li><a href="#">Delivery Email</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section logo-social">
+      <img src="robertoslogo.png" alt="Roberto's Logo" />
+      <p>Authentic Italian Taste</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>48 Roberto Ave, Nairobi, KE 00400</p>
+    <p>© 2025 Roberto’s. All rights reserved</p>
+  </div>
+</footer>
+</body>
+</html>
