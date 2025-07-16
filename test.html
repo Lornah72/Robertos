@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Our Events</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f3e3ca;
+      color: #3d2c29;
+    }
+    .events-wrapper {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto 3rem;
+      padding: 2rem 1rem;
+    }
+    /* Outer big corners */
+    .outer-corner {
+      position: absolute;
+      width: 40px; height: 40px;
+      border: 4px solid #532d2d;
+    }
+    .outer-top-left     { top: 0;    left: 0;    border-right:none; border-bottom:none; }
+    .outer-bottom-right { bottom: 0; right: 0;   border-left:none;  border-top:none;    }
+
+    /* Header corners */
+    .header-corner {
+      position: absolute;
+      width: 20px; height: 20px;
+      border: 3px solid #532d2d;
+    }
+    .hc-left  { top: 1.2rem; left: 1.2rem; border-right:none; border-bottom:none; }
+    .hc-right { top: 1.2rem; right:1.2rem; border-left:none;  border-bottom:none; }
+
+    /* Pill header */
+    .events-header {
+      display: inline-block;
+      background: #532d2d;
+      color: white;
+      padding: 0.5rem 2rem;
+      border-radius: 20px;
+      font-size: 1.25rem;
+      margin: 0 auto 2rem;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* The grid */
+    .events-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr;
+      gap: 2rem;
+    }
+
+    /* Each poster card */
+    .poster-card {
+      position: relative;
+      background: #532d2d;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    /* fixed heights */
+    .poster-card:nth-child(1),
+    .poster-card:nth-child(2) { height: 600px; }
+    .poster-card:nth-child(3)    { height: 450px; }
+
+    .poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* small corners on each card */
+    .poster-corner {
+      position: absolute;
+      width: 20px; height: 20px;
+      border: 3px solid #f3e3ca;
+    }
+    .poster-corner.top-left     { top: 0;    left: 0;    border-right:none; border-bottom:none; }
+    .poster-corner.top-right    { top: 0;    right:0;    border-left:none;  border-bottom:none; }
+    .poster-corner.bottom-left  { bottom:0;  left: 0;    border-right:none; border-top:none;    }
+    .poster-corner.bottom-right { bottom:0;  right:0;    border-left:none;  border-top:none;    }
+
+    @media (max-width: 800px) {
+      .events-grid { grid-template-columns: 1fr; }
+      .events-header { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="events-wrapper">
+    <!-- outer corners -->
+    <div class="outer-corner outer-top-left"></div>
+    <div class="outer-corner outer-bottom-right"></div>
+    <!-- header corners -->
+    <div class="header-corner hc-left"></div>
+    <div class="header-corner hc-right"></div>
+    <!-- title -->
+    <div class="events-header">Our Events</div>
+    <!-- grid placeholder -->
+    <div class="events-grid" id="posters-container"></div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const SUPABASE_URL      = 'https://hdukbuwmezqyxzsqgqff.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function loadPosters() {
+      const { data, error } = await supabase
+        .from('events')
+        .select('image_path')
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('posters-container');
+      if (error) {
+        container.innerHTML = `<p style="text-align:center;color:red;">Error loading events.</p>`;
+        console.error(error);
+        return;
+      }
+
+      container.innerHTML = '';
+      data.forEach(({ image_path }) => {
+        const url = image_path.trim();
+        const card = document.createElement('div');
+        card.className = 'poster-card';
+        card.innerHTML = `
+          <div class="poster-corner top-left"></div>
+          <div class="poster-corner top-right"></div>
+          <img src="${url}" alt="Event Poster">
+          <div class="poster-corner bottom-left"></div>
+          <div class="poster-corner bottom-right"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    loadPosters();
+  </script>
+</body>
+</html>

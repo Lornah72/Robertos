@@ -1,15 +1,23 @@
-<!-- landing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome to Roberto’s Market</title>
-  <link rel="stylesheet" href="landing.css" />
+  <link rel="stylesheet" href="landing.css">
+
+  <!-- HERO CSS -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+
+  
+  </style>
 </head>
 <body>
-  <!-- put this where you need the hero -->
-<section class="hero">
+
+  <!-- HERO -->
+  <section class="hero">
   <div class="hero-content">
     <div class="left-col">
       <img src="robertoslogo.png" alt="Roberto’s Logo" class="hero-logo">
@@ -37,65 +45,126 @@
     <a href="order.html">Order Online <span>→</span></a>
   </nav>
 </section>
-<h1 class="page-title">Our Events</h1>
-  <div id="posters-container"></div>
 
-  <!-- 1) Load the UMD Supabase script so window.supabase is defined -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
-  
-  <!-- 2) Then your application code -->
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Initialize your Supabase client
-      const SUPABASE_URL     = 'https://hdukbuwmezqyxzsqgqff.supabase.co';
-      const SUPABASE_ANON_KEY= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo';
-      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      // Fetch and render posters
-      const loadPosters = async () => {
-        const { data, error } = await supabase
-          .from('events')
-          .select('id, image_path')
-          .order('created_at', { ascending: false });
+  <!-- EVENTS SECTION -->
+  <div class="events-wrapper">
+    <!-- outer corners -->
+    <div class="outer-corner outer-top-left"></div>
+    <div class="outer-corner outer-bottom-right"></div>
+    <!-- header corners -->
+    <div class="header-corner hc-left"></div>
+    <div class="header-corner hc-right"></div>
+    <!-- title pill -->
+    <div class="events-header">Our Events</div>
+    <!-- grid -->
+    <div class="events-grid" id="posters-container"></div>
+  </div>
 
-        if (error) {
-          console.error('Error loading events:', error);
-          return;
-        }
+  <!-- EVENTS CSS -->
+  <style>
+    .events-wrapper {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto 3rem;
+      padding: 2rem 1rem;
+    }
+    .outer-corner {
+      position: absolute; width: 40px; height: 40px;
+      border: 4px solid #532d2d;
+    }
+    .outer-top-left     { top: 0; left: 0; border-right:none; border-bottom:none; }
+    .outer-bottom-right { bottom: 0; right: 0; border-left:none; border-top:none; }
 
-        const container = document.querySelector('#posters-container');
-        container.innerHTML = '';
+    .header-corner {
+      position: absolute; width: 20px; height: 20px;
+      border: 3px solid #532d2d;
+    }
+    .hc-left  { top: 1.2rem; left: 1.2rem; border-right:none; border-bottom:none; }
+    .hc-right { top: 1.2rem; right:1.2rem; border-left:none; border-bottom:none; }
 
-        data.forEach(evt => {
-          // build public URL
-          const { publicURL, error: urlErr } = supabase
-            .storage
-            .from('posters')
-            .getPublicUrl(evt.image_path);
+    .events-header {
+      display: inline-block;
+      background: #532d2d;
+      color: #fff;
+      padding: 0.5rem 2rem;
+      border-radius: 20px;
+      font-size: 1.25rem;
+      margin: 0 auto 2rem;
+      position: relative; left:50%; transform: translateX(-50%);
+    }
 
-          if (urlErr) {
-            console.error('URL error:', urlErr);
-            return;
-          }
+    .events-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr;
+      gap: 2rem;
+    }
+    .poster-card {
+      position: relative;
+      background: #532d2d;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .poster-card:nth-child(1),
+    .poster-card:nth-child(2) { height: 600px; }
+    .poster-card:nth-child(3)    { height: 450px; }
 
-          // create card
-          const card = document.createElement('div');
-          card.className = 'poster-card';
-          card.innerHTML = `
-            <div class="corner top-left"></div>
-            <div class="corner top-right"></div>
-            <img src="${publicURL}" alt="Event Poster">
-            <div class="corner bottom-left"></div>
-            <div class="corner bottom-right"></div>
-          `;
-          container.appendChild(card);
-        });
-      };
+    .poster-card img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .poster-corner {
+      position: absolute; width: 20px; height: 20px;
+      border: 3px solid #f3e3ca;
+    }
+    .poster-corner.top-left     { top: 0; left:0;    border-right:none; border-bottom:none; }
+    .poster-corner.top-right    { top:0;  right:0;   border-left:none;  border-bottom:none; }
+    .poster-corner.bottom-left  { bottom:0;left:0;   border-right:none; border-top:none;    }
+    .poster-corner.bottom-right { bottom:0;right:0;  border-left:none;  border-top:none;    }
 
-      // Initial load
-      await loadPosters();
-    });
+    @media (max-width:800px) {
+      .events-grid { grid-template-columns:1fr; }
+      .events-header { font-size:1.1rem; }
+    }
+  </style>
+
+  <!-- SUPABASE + SCRIPT -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const SUPABASE_URL      = 'https://hdukbuwmezqyxzsqgqff.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function loadPosters() {
+      const { data, error } = await supabase
+        .from('events')
+        .select('image_path')
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('posters-container');
+      if (error) {
+        container.innerHTML = `<p style="text-align:center;color:red;">Error loading events.</p>`;
+        console.error(error);
+        return;
+      }
+      container.innerHTML = '';
+      data.forEach(({ image_path }) => {
+        const url = image_path.trim();
+        const card = document.createElement('div');
+        card.className = 'poster-card';
+        card.innerHTML = `
+          <div class="poster-corner top-left"></div>
+          <div class="poster-corner top-right"></div>
+          <img src="${url}" alt="Event Poster">
+          <div class="poster-corner bottom-left"></div>
+          <div class="poster-corner bottom-right"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    loadPosters();
   </script>
-
 </body>
 </html>
