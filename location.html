@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js"></script>
+</head>
+<body>
+  <header>
+  <!-- Top Info Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="contact">
+        <span>+254 700 907 460</span>
+        <span>info@robertosmarket.co.ke</span>
+      </div>
+      <div class="tools">
+        <a href="cart.html" class="cart">🛒<span class="cart-count">0</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navbar -->
+  <nav class="main-nav">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="robertoslogo.png" alt="Roberto’s Market">
+      </a>
+      <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="restaurant.html">About</a></li>
+        <li><a href="order.html">Order Online</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>  
+  <!-- OUR LOCATIONS -->
+<section class="locations">
+  <h2>Our Offices & Restaurants</h2>
+  <div class="location-grid">
+    <!-- Roberto’s Market – Rosslyn Riviera Mall, Nairobi -->
+    <div class="location-card">
+      <iframe
+        src="https://maps.google.com/maps?q=Rosslyn%20Riviera%20Mall%2C%20Nairobi&z=15&output=embed"
+        frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0">
+      </iframe>
+      <div class="location-info">
+        <strong>Roberto’s Market</strong><br>
+        Rosslyn Riviera Mall, 1<sup>st</sup> Floor<br>
+        Nairobi, Kenya<br>
+        <a href="tel:+254700907460">Tel: +254 700 907 460</a>
+      </div>
+    </div>
+
+    <!-- Roberto’s Cellar – The Promenade Mall, Mombasa -->
+    <div class="location-card">
+      <iframe
+        src="https://maps.google.com/maps?q=The%20Promenade%20Mall%2C%20Mombasa&z=15&output=embed"
+        frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0">
+      </iframe>
+      <div class="location-info">
+        <strong>Roberto’s Cellar</strong><br>
+        The Promenade Mall, Ground Floor<br>
+        Mombasa, Kenya<br>
+        <a href="tel:+254700907460">Tel: +254 700 907 460</a>
+      </div>
+    </div>
+
+    <!-- Roberto’s Restaurant – Opposite Premier Hospital, Mombasa -->
+    <div class="location-card">
+      <iframe
+        src="https://maps.google.com/maps?q=Opposite%20Premier%20Hospital%2C%20Links%20Rd%2C%20Mombasa&z=15&output=embed"
+        frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0">
+      </iframe>
+      <div class="location-info">
+        <strong>Roberto’s Restaurant</strong><br>
+        Opposite Premier Hospital, Links Rd<br>
+        Mombasa, Kenya<br>
+        <a href="tel:+254700907460">Tel: +254 700 907 460</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .locations {
+    padding: 2rem 1rem;
+    background: #f3e3ca;
+    color: #3d2c29;
+  }
+  .locations h2 {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .location-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .location-card {
+    background: #f3e3ca;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  .location-card iframe {
+    width: 100%;
+    height: 200px;
+    border: 0;
+  }
+  .location-info {
+    padding: 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  .location-info a {
+    color: #532d2d;
+    text-decoration: none;
+  }
+  .location-info a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive: stack on tablets & phones */
+  @media (max-width: 900px) {
+    .location-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .location-grid {
+      grid-template-columns: 1fr;
+    }
+    .location-card iframe {
+      height: 250px;
+    }
+  }
+</style>
+<footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>ABOUT</h4>
+        <ul>
+          <li><a href="#">Company</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>BLOG</h4>
+        <ul>
+          <li><a href="#">Taste</a></li>
+          <li><a href="#">Adventures</a></li>
+          <li><a href="#">Wine</a></li>
+          <li><a href="#">Values</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>PRODUCTS</h4>
+        <ul>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">Partner With Us</a></li>
+          <li><a href="#">Delivery Email</a></li>
+        </ul>
+      </div>
+      <div class="footer-section logo-social">
+        <img src="robertoslogo.png" alt="Roberto's Logo" />
+        <p>Authentic Italian Taste</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>48 Roberto Ave, Nairobi, KE 00400</p>
+      <p>© 2025 Roberto’s. All rights reserved</p>
+    </div>
+  </footer>
+</body>
+</html>
