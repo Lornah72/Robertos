@@ -10,6 +10,85 @@
   <!-- HERO CSS -->
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* MOBILE ADJUSTMENTS */
+    @media (max-width: 600px) {
+      /* Stack hero elements */
+      .hero-content,
+      .side-imgs {
+        display: none;
+      }
+
+      .hero-text,
+      
+
+      /* Show mobile carousel */
+      .mobile-hero-carousel {
+        display: block;
+        position: relative;
+        width: 100vw;
+        height: 70vw;
+        max-height: 400px;
+        margin: -1rem 0 1rem;
+        background-size: cover;
+        background-position: center;
+      }
+      .mobile-hero-carousel::before {
+        content: "";
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 0;
+      }
+      .mobile-hero-carousel .text {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+        color: #fff;
+        font-size: 1rem;
+        line-height: 1.5;
+        text-align: center;
+        z-index: 1;
+      }
+      .mobile-hero-carousel .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        color: #fff;
+        background: rgba(0,0,0,0.3);
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .mobile-hero-carousel .arrow.left  { left: 1rem; }
+      .mobile-hero-carousel .arrow.right { right:1rem; }
+      .mobile-hero-carousel .arrow:hover {
+        background: rgba(0,0,0,0.5);
+      }
+
+      /* Keep nav visible and in correct order */
+      .hero-nav {
+        order: 2;
+        display: flex !important;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+      }
+      .hero-nav a {
+        flex: 0 1 auto;
+        max-width: 180px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      /* Source order: content (hidden), carousel, nav */
+      .hero-content { order: 0; }
+      .mobile-hero-carousel { order: 1; }
+      .hero-nav { order: 4; }
+    }
     
 
   
@@ -40,10 +119,7 @@
     </div>
 
     <div class="product-navbar">
-      <a href="category.html?id=2">Cellar</a>
-      <a href="category.html?id=1">Market</a>
-      <a href="category.html?id=3">Restaurant</a>
-      <a href="category.html?id=4">Bistro</a>
+      
     </div>
   </section>
 
@@ -68,14 +144,68 @@
       <img src="WhatsApp Image 2025-07-16 at 19.50.26.jpeg" alt="Roberto’s Cellar seating area">
     </div>
   </div>
+  
+<!-- Mobile Carousel Placeholder -->
+      <div class="mobile-hero-carousel"></div>
 
-  <nav class="hero-nav">
-    <a href="market.html">Roberto’s Market <span>→</span></a>
-    <a href="cellar.html">Roberto’s Cellar <span>→</span></a>
-    <a href="restaurant.html">Restaurant <span>→</span></a>
-    <a href="order.html">Order Online <span>→</span></a>
-  </nav>
-</section>
+      <nav class="hero-nav">
+        <a href="market.html">Roberto’s Market <span>→</span></a>
+        <a href="cellar.html">Roberto’s Cellar <span>→</span></a>
+        <a href="restaurant.html">Restaurant <span>→</span></a>
+        <a href="order.html">Order Online <span>→</span></a>
+      </nav>
+    </div>
+<style>
+  
+  
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.innerWidth > 600) return;
+  var carousel = document.querySelector('.mobile-hero-carousel');
+  if (!carousel) return;
+
+  var ps = Array.prototype.slice.call(
+    document.querySelectorAll('.hero-text p')
+  ).map(function(p){ return p.textContent.trim(); });
+
+  var imgs = Array.prototype.slice.call(
+    document.querySelectorAll('.main-img img, .side-imgs img')
+  ).map(function(i){ return i.src; });
+
+  if (!ps.length || !imgs.length) {
+    carousel.parentNode.removeChild(carousel);
+    return;
+  }
+
+  carousel.innerHTML = ''
+    + '<button class="arrow left">&larr;</button>'
+    + '<div class="text"></div>'
+    + '<button class="arrow right">&rarr;</button>';
+
+  var idx = 0;
+  var textDiv = carousel.querySelector('.text');
+  var leftBtn = carousel.querySelector('.arrow.left');
+  var rightBtn = carousel.querySelector('.arrow.right');
+
+  function render() {
+    // plain string concat for the background-image
+    carousel.style.backgroundImage = 'url(' + imgs[idx] + ')';
+    textDiv.textContent = ps[idx];
+  }
+
+  leftBtn.onclick  = function() {
+    idx = (idx - 1 + ps.length) % ps.length;
+    render();
+  };
+  rightBtn.onclick = function() {
+    idx = (idx + 1) % ps.length;
+    render();
+  };
+
+  render();
+});
+</script>
 
 
   <!-- EVENTS SECTION -->
@@ -154,9 +284,24 @@
     .poster-corner.bottom-right { bottom:0;right:0;  border-left:none;  border-top:none;    }
 
     @media (max-width:800px) {
-      .events-grid { grid-template-columns:1fr; }
+      .events-grid { grid-template-columns:1fr;}
       .events-header { font-size:1.1rem; }
     }
+    @media (max-width: 600px) {
+  /* Make the grid two columns on narrow viewports */
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  /* Shrink each card so two can fit vertically in ~100vh */
+ .poster-card {
+    height: 40vh !important;   /* or tweak to 35vh / 45vh to taste */
+    width: auto;
+  }
+}
+
   </style>
 
   <!-- SUPABASE + SCRIPT -->
@@ -197,6 +342,128 @@
 
     loadPosters();
   </script>
+  <!-- TESTIMONIALS SECTION -->
+<section class="testimonials">
+  <h2>ABOUT US&nbsp;<span>💬</span></h2>
+  <div class="testimonial-wrapper">
+    <button class="arrow left">&larr;</button>
+    <div class="testimonial" id="testimonial">
+      <!-- JS will inject the quote here -->
+    </div>
+    <button class="arrow right">&rarr;</button>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding: 4rem 1rem;
+    text-align: center;
+    background: #f3e3ca;
+    color: #3d2c29;
+    font-family: serif;
+  }
+  .testimonials h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+  }
+  .testimonial-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .testimonial {
+    flex: 1;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    padding: 0 1rem;
+    min-height: 6rem;
+    transition: opacity 0.5s;
+  }
+  .testimonial p {
+    margin-bottom: 1rem;
+  }
+  .testimonial .author {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-style: italic;
+    color: #666;
+  }
+  .arrow {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #3d2c29;
+    cursor: pointer;
+    padding: 0 1rem;
+    user-select: none;
+    transition: color 0.2s;
+  }
+  .arrow:hover {
+    color: #532d2d;
+  }
+  @media (max-width: 600px) {
+    .testimonial { font-size: 1.1rem; }
+    .arrow { font-size: 1.5rem; }
+  }
+</style>
+
+<script>
+  (function() {
+    const quotes = [
+      {
+        text: "At Roberto’s, our mission is simple: to deliver genuine Italian flavours, from our hand-rolled pastas and imported cheeses to our carefully curated wine list. We partner directly with artisanal producers in Italy to ensure every product in our market meets our uncompromising standards of quality and taste.",
+        author: ""
+      },
+      {
+        text: "We envision Roberto’s Market as more than just a grocery store, it’s a gathering place where every visit feels like a trip to Italy. Whether you’re picking up dinner for the family or discovering your next favorite wine, we strive to make every customer feel at home in our Italian market.",
+        author: ""
+        //“”
+      },
+      {
+        text: "Roberto’s Cellar: A dedicated wine boutique with over 200 labels of Italian DOC and DOCG wines, plus regular tasting events led by our certified sommeliers. <br>In-House Delights: Daily-baked focaccia, fresh pasta and gelato made on-site by our Italian-trained chefs. <br>Culinary Workshops: From “Make Your Own Mozzarella” to “Mastering Roman-Style Pizza,” we host interactive classes for all ages and skill levels.",
+        author: ""
+      }
+    ];
+
+    let idx = 0;
+    const container = document.getElementById("testimonial");
+    const show = i => {
+      container.style.opacity = 0;
+      setTimeout(() => {
+        container.innerHTML = `
+          <p>${quotes[i].text}</p>
+          <span class="author">${quotes[i].author}</span>
+        `;
+        container.style.opacity = 1;
+      }, 250);
+    };
+
+    // initial display
+    show(idx);
+
+    // arrows
+    document.querySelector(".arrow.left").onclick = () => {
+      idx = (idx - 1 + quotes.length) % quotes.length;
+      show(idx);
+    };
+    document.querySelector(".arrow.right").onclick = () => {
+      idx = (idx + 1) % quotes.length;
+      show(idx);
+    };
+
+    // auto-rotate every 5s
+    setInterval(() => {
+      idx = (idx + 1) % quotes.length;
+      show(idx);
+    }, 5000);
+  })();
+</script>
+
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-section">

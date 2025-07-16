@@ -82,6 +82,7 @@
   background-color: #412224;
 }
 
+
 /* responsive */
 @media (max-width: 900px) {
   .hero-content {
@@ -92,6 +93,7 @@
     grid-template-rows: none;
   }
 }
+
 /* === PAGE TITLE === */
 body {
   margin: 0;

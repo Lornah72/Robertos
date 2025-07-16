@@ -1,149 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Our Events</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Roberto’s Market</title>
+
+  <!-- HERO & MOBILE STYLES -->
   <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #f3e3ca;
-      color: #3d2c29;
-    }
-    .events-wrapper {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto 3rem;
-      padding: 2rem 1rem;
-    }
-    /* Outer big corners */
-    .outer-corner {
-      position: absolute;
-      width: 40px; height: 40px;
-      border: 4px solid #532d2d;
-    }
-    .outer-top-left     { top: 0;    left: 0;    border-right:none; border-bottom:none; }
-    .outer-bottom-right { bottom: 0; right: 0;   border-left:none;  border-top:none;    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f3e3ca; color: #3d2c29; }
 
-    /* Header corners */
-    .header-corner {
-      position: absolute;
-      width: 20px; height: 20px;
-      border: 3px solid #532d2d;
+    .hero {
+      padding: 2rem 1rem 1rem;
     }
-    .hc-left  { top: 1.2rem; left: 1.2rem; border-right:none; border-bottom:none; }
-    .hc-right { top: 1.2rem; right:1.2rem; border-left:none;  border-bottom:none; }
-
-    /* Pill header */
-    .events-header {
-      display: inline-block;
-      background: #532d2d;
-      color: white;
-      padding: 0.5rem 2rem;
-      border-radius: 20px;
-      font-size: 1.25rem;
-      margin: 0 auto 2rem;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
     }
-
-    /* The grid */
-    .events-grid {
+    .hero-content {
       display: grid;
-      grid-template-columns: 2fr 1.5fr 1fr;
-      gap: 2rem;
+      grid-template-columns: 1.5fr 3fr 2fr;
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: start;
     }
+    .left-col { display: flex; flex-direction: column; }
+    .hero-logo { max-width: 250px; margin-bottom: 1.5rem; }
+    .hero-text p { margin-bottom: 1rem; line-height: 1.5; }
 
-    /* Each poster card */
-    .poster-card {
-      position: relative;
-      background: #532d2d;
-      overflow: hidden;
+    .main-img img,
+    .side-imgs img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
       border-radius: 4px;
     }
-    /* fixed heights */
-    .poster-card:nth-child(1),
-    .poster-card:nth-child(2) { height: 600px; }
-    .poster-card:nth-child(3)    { height: 450px; }
-
-    .poster-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .side-imgs {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.5rem;
     }
 
-    /* small corners on each card */
-    .poster-corner {
-      position: absolute;
-      width: 20px; height: 20px;
-      border: 3px solid #f3e3ca;
+    .hero-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
     }
-    .poster-corner.top-left     { top: 0;    left: 0;    border-right:none; border-bottom:none; }
-    .poster-corner.top-right    { top: 0;    right:0;    border-left:none;  border-bottom:none; }
-    .poster-corner.bottom-left  { bottom:0;  left: 0;    border-right:none; border-top:none;    }
-    .poster-corner.bottom-right { bottom:0;  right:0;    border-left:none;  border-top:none;    }
+    .hero-nav a {
+      background: #532d2d;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .hero-nav a span { margin-left: 0.5rem; font-size: 1.25rem; }
+    .hero-nav a:hover { background: #412224; }
 
-    @media (max-width: 800px) {
-      .events-grid { grid-template-columns: 1fr; }
-      .events-header { font-size: 1.1rem; }
+    /* Desktop-only mobile carousel hidden */
+    .mobile-hero-carousel { display: none; }
+
+    /* MOBILE ADJUSTMENTS */
+    @media (max-width: 600px) {
+      /* Stack hero elements */
+      .hero-content,
+      .side-imgs {
+        display: none;
+      }
+
+      .hero-text,
+      .hero-logo {
+        text-align: center;
+        margin: 0 auto 1rem;
+      }
+
+      /* Show mobile carousel */
+      .mobile-hero-carousel {
+        display: block;
+        position: relative;
+        width: 100vw;
+        height: 70vw;
+        max-height: 400px;
+        margin: -1rem 0 1rem;
+        background-size: cover;
+        background-position: center;
+      }
+      .mobile-hero-carousel::before {
+        content: "";
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 0;
+      }
+      .mobile-hero-carousel .text {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+        width: 90%;
+        color: #fff;
+        font-size: 1rem;
+        line-height: 1.5;
+        text-align: center;
+        z-index: 1;
+      }
+      .mobile-hero-carousel .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        color: #fff;
+        background: rgba(0,0,0,0.3);
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .mobile-hero-carousel .arrow.left  { left: 1rem; }
+      .mobile-hero-carousel .arrow.right { right:1rem; }
+      .mobile-hero-carousel .arrow:hover {
+        background: rgba(0,0,0,0.5);
+      }
+
+      /* Keep nav visible and in correct order */
+      .hero-nav {
+        order: 2;
+        display: flex !important;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+      }
+      .hero-nav a {
+        flex: 0 1 auto;
+        max-width: 173px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      /* Source order: content (hidden), carousel, nav */
+      .hero-content { order: 0; }
+      .mobile-hero-carousel { order: 1; }
+      .hero-nav { order: 2; }
     }
   </style>
 </head>
 <body>
 
-  <div class="events-wrapper">
-    <!-- outer corners -->
-    <div class="outer-corner outer-top-left"></div>
-    <div class="outer-corner outer-bottom-right"></div>
-    <!-- header corners -->
-    <div class="header-corner hc-left"></div>
-    <div class="header-corner hc-right"></div>
-    <!-- title -->
-    <div class="events-header">Our Events</div>
-    <!-- grid placeholder -->
-    <div class="events-grid" id="posters-container"></div>
-  </div>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="left-col">
+          <img src="robertoslogo.png" alt="Roberto’s Logo" class="hero-logo">
+          <div class="hero-text">
+            <p>At Roberto’s Market, we bring you the true taste of Italy right here in Nairobi and Mombasa. From premium pastas, authentic cold cuts, cheeses, to a wide range of everyday essentials, it’s everything you’d find in an Italian supermarket, now in Kenya.</p>
+            <p>For wine lovers, explore Roberto’s Cellar, your destination for handpicked, imported Italian wines. Whether you’re a connoisseur or just discovering wine, we offer a curated collection to suit every taste and occasion.</p>
+            <p>Come experience the best of Italy, without leaving Kenya.</p>
+          </div>
+        </div>
+        <div class="main-img">
+          <img src="WhatsApp Image 2025-07-15 at 09.52.06.jpeg" alt="Grand opening ribbon cutting">
+        </div>
+        <div class="side-imgs">
+          <img src="WhatsApp Image 2025-07-15 at 09.52.07.jpeg" alt="Chef preparing pasta">
+          <img src="WhatsApp Image 2025-07-15 at 09.52.07.jpeg" alt="Roberto’s Cellar seating area">
+        </div>
+      </div>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+      <!-- Mobile Carousel Placeholder -->
+      <div class="mobile-hero-carousel"></div>
 
-    const SUPABASE_URL      = 'https://hdukbuwmezqyxzsqgqff.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      <nav class="hero-nav">
+        <a href="market.html">Roberto’s Market <span>→</span></a>
+        <a href="cellar.html">Roberto’s Cellar <span>→</span></a>
+        <a href="restaurant.html">Restaurant <span>→</span></a>
+        <a href="order.html">Order Online <span>→</span></a>
+      </nav>
+    </div>
+  </section>
 
-    async function loadPosters() {
-      const { data, error } = await supabase
-        .from('events')
-        .select('image_path')
-        .order('created_at', { ascending: false });
+  <!-- MOBILE CAROUSEL SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.innerWidth > 600) return;
+      var carousel = document.querySelector('.mobile-hero-carousel');
+      if (!carousel) return;
 
-      const container = document.getElementById('posters-container');
-      if (error) {
-        container.innerHTML = `<p style="text-align:center;color:red;">Error loading events.</p>`;
-        console.error(error);
+      // Grab Desktop Text + Images
+      var ps   = Array.prototype.slice.call(document.querySelectorAll('.hero-text p'))
+                     .map(function(p){ return p.textContent.trim(); });
+      var imgs = Array.prototype.slice.call(
+                   document.querySelectorAll('.main-img img, .side-imgs img')
+                 ).map(function(i){ return i.src; });
+
+      if (!ps.length || !imgs.length) {
+        carousel.parentNode.removeChild(carousel);
         return;
       }
 
-      container.innerHTML = '';
-      data.forEach(({ image_path }) => {
-        const url = image_path.trim();
-        const card = document.createElement('div');
-        card.className = 'poster-card';
-        card.innerHTML = `
-          <div class="poster-corner top-left"></div>
-          <div class="poster-corner top-right"></div>
-          <img src="${url}" alt="Event Poster">
-          <div class="poster-corner bottom-left"></div>
-          <div class="poster-corner bottom-right"></div>
-        `;
-        container.appendChild(card);
-      });
-    }
+      // Build carousel HTML
+      carousel.innerHTML = ''
+        + '<button class="arrow left">&larr;</button>'
+        + '<div class="text"></div>'
+        + '<button class="arrow right">&rarr;</button>';
 
-    loadPosters();
+      var idx     = 0;
+      var textDiv = carousel.querySelector('.text');
+      var leftBtn = carousel.querySelector('.arrow.left');
+      var rightBtn= carousel.querySelector('.arrow.right');
+
+      function render() {
+        carousel.style.backgroundImage = 'url(' + imgs[idx] + ')';
+        textDiv.textContent = ps[idx];
+      }
+
+      leftBtn.onclick  = function() {
+        idx = (idx - 1 + ps.length) % ps.length; render();
+      };
+      rightBtn.onclick = function() {
+        idx = (idx + 1) % ps.length; render();
+      };
+
+      render();
+    });
   </script>
 </body>
 </html>
