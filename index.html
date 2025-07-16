@@ -16,12 +16,42 @@
   </style>
 </head>
 <body>
+  <section class="full-navbar">
+    <div class="top-navbar">
+      <div class="logo-area">
+        <img src="robertoslogo.png" alt="Roberto's Logo" />
+        <div class="nav-links switch-buttons">
+          <button class="market-btn active" onclick="toggleMode('market')">Market</button>
+          <button onclick="openRestaurantMenu()">Restaurant</button>
+          <button class="mobile-nav-toggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      <div class="search-icons" style="position: relative;">
+        <div class="search-box">
+          <input type="text" id="product-search" placeholder="Search products..." />
+          <i class="fas fa-search"></i>
+        </div>
+        <div id="search-results" style="display:none;"></div>
+        <i class="fas fa-cart-shopping icon"></i>
+        <i class="fas fa-user icon"></i>
+      </div>
+    </div>
+
+    <div class="product-navbar">
+      <a href="category.html?id=2">Cellar</a>
+      <a href="category.html?id=1">Market</a>
+      <a href="category.html?id=3">Restaurant</a>
+      <a href="category.html?id=4">Bistro</a>
+    </div>
+  </section>
 
   <!-- HERO -->
   <section class="hero">
   <div class="hero-content">
     <div class="left-col">
-      <img src="robertoslogo.png" alt="Roberto’s Logo" class="hero-logo">
+      
       <div class="hero-text">
         <p>At Roberto’s Market, we bring you the true taste of Italy right here in Nairobi and Mombasa. From premium pastas, authentic cold cuts, cheeses, to a wide range of everyday essentials, it’s everything you’d find in an Italian supermarket, now in Kenya.</p>
         <p>For wine lovers, explore Roberto’s Cellar, your destination for handpicked, imported Italian wines. Whether you’re a connoisseur or just discovering wine, we offer a curated collection to suit every taste and occasion.</p>
@@ -35,7 +65,7 @@
 
     <div class="side-imgs">
       <img src="WhatsApp Image 2025-07-15 at 09.52.07.jpeg" alt="Chef preparing pasta">
-      <img src="WhatsApp Image 2025-07-15 at 09.52.07.jpeg" alt="Roberto’s Cellar seating area">
+      <img src="WhatsApp Image 2025-07-16 at 19.50.26.jpeg" alt="Roberto’s Cellar seating area">
     </div>
   </div>
 
