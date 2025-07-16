@@ -1,469 +1,101 @@
+<!-- landing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roberto's Navbar</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
-
-  <style>
-    /* NEW SEARCH DROPDOWN */
-    #search-results {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      max-height: 300px;
-      overflow-y: auto;
-      z-index: 9999;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    #search-results .result-item {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding: 8px 10px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-    }
-    #search-results .result-item img {
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-      border-radius: 3px;
-    }
-    #search-results .result-item:hover {
-      background: #f4f4f4;
-    }
-    @media (max-width: 768px) {
-      .top-navbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .search-icons {
-        width: 100%;
-      }
-      .search-box {
-        width: 100%;
-      }
-      .search-box input {
-        width: 100%;
-      }
-      .product-navbar {
-        flex-wrap: wrap;
-      }
-      .product-navbar a {
-        padding: 10px 15px;
-        display: block;
-      }
-    }
-  </style>
+  <title>Welcome to Roberto’s Market</title>
+  <link rel="stylesheet" href="landing.css" />
 </head>
-
 <body>
-  <section class="full-navbar">
-    <div class="top-navbar">
-      <div class="logo-area">
-        <img src="robertoslogo.png" alt="Roberto's Logo" />
-        <div class="nav-links switch-buttons">
-          <button class="market-btn active" onclick="toggleMode('market')">Market</button>
-          <button onclick="openRestaurantMenu()">Restaurant</button>
-          <button class="mobile-nav-toggle" aria-label="Toggle menu">
-            <i class="fas fa-bars"></i>
-          </button>
-        </div>
-      </div>
-      <div class="search-icons" style="position: relative;">
-        <div class="search-box">
-          <input type="text" id="product-search" placeholder="Search products..." />
-          <i class="fas fa-search"></i>
-        </div>
-        <div id="search-results" style="display:none;"></div>
-        <i class="fas fa-cart-shopping icon"></i>
-        <i class="fas fa-user icon"></i>
-      </div>
-    </div>
-
-    <div class="product-navbar">
-      <a href="category.html?id=2">Cellar</a>
-      <a href="category.html?id=1">Cheeses</a>
-      <a href="category.html?id=3">Pasta</a>
-      <a href="category.html?id=4">Whiskey</a>
-      <a href="category.html?id=5">Grappa</a>
-      <a href="category.html?id=6">Gin</a>
-      <a href="category.html?id=7">Beers</a>
-    </div>
-  </section>
-<script>
-  function openRestaurantMenu() {
-  window.open('menu.pdf', '_blank');
-}
-
-</script>
-  <section class="hero">
-    <div class="hero-container">
+  <!-- put this where you need the hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="left-col">
+      <img src="robertoslogo.png" alt="Roberto’s Logo" class="hero-logo">
       <div class="hero-text">
-        <h1>AUTHENTIC ITALIAN <br> TASTE</h1>
-        <p>
-          Step into a world of Italian excellence. From bold regional wines to premium pantry essentials, Roberto’s brings you the finest imported Italian products.
-        </p>
-        <a href="#" class="btn-hero">
-          Shop Now <span class="btn-arrow">→</span>
-        </a>
-      </div>
-      <div class="hero-image">
-        <img src="hero.png" alt="Assortment of Italian products">
+        <p>At Roberto’s Market, we bring you the true taste of Italy right here in Nairobi and Mombasa. From premium pastas, authentic cold cuts, cheeses, to a wide range of everyday essentials, it’s everything you’d find in an Italian supermarket, now in Kenya.</p>
+        <p>For wine lovers, explore Roberto’s Cellar, your destination for handpicked, imported Italian wines. Whether you’re a connoisseur or just discovering wine, we offer a curated collection to suit every taste and occasion.</p>
+        <p>Come experience the best of Italy, without leaving Kenya.</p>
       </div>
     </div>
-  </section>
 
-  <section class="popular-products">
-    <h2 class="section-title">Popular Products</h2>
-    <div id="popular-grid" class="product-grid"></div>
-    <div class="see-more">
-      <button class="see-more-btn">See more products</button>
+    <div class="main-img">
+      <img src="WhatsApp Image 2025-07-15 at 09.52.06.jpeg" alt="Grand opening ribbon cutting">
     </div>
-  </section>
 
-  <section class="carousel-section">
-    <h2>Cheese, Butter and Yoghurt</h2>
-    <div id="cheese-carousel" class="carousel-container"></div>
-  </section>
-
-  <section class="carousel-section">
-    <h2>Pasta, Rice and Flour</h2>
-    <div id="pasta-carousel" class="carousel-container"></div>
-  </section>
-
-  <section class="carousel-section">
-    <h2>Chocolate, Coffee and Tea</h2>
-    <div id="confectionery-carousel" class="carousel-container"></div>
-  </section>
-
-  <section class="carousel-section">
-    <h2>Wines Cellar</h2>
-    <div id="wines-carousel" class="carousel-container"></div>
-  </section>
-
-  <section class="carousel-section">
-    <h2>Spirit Cellar</h2>
-    <div id="spirit-carousel" class="carousel-container"></div>
-  </section>
-
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-section">
-        <h4>ABOUT</h4>
-        <ul>
-          <li><a href="#">Company</a></li>
-          <li><a href="#">Community</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>BLOG</h4>
-        <ul>
-          <li><a href="#">Taste</a></li>
-          <li><a href="#">Adventures</a></li>
-          <li><a href="#">Wine</a></li>
-          <li><a href="#">Values</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>PRODUCTS</h4>
-        <ul>
-          <li><a href="#">Shop</a></li>
-          <li><a href="#">Partner With Us</a></li>
-          <li><a href="#">Delivery Email</a></li>
-        </ul>
-      </div>
-      <div class="footer-section logo-social">
-        <img src="robertoslogo.png" alt="Roberto's Logo" />
-        <p>Authentic Italian Taste</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-        </div>
-      </div>
+    <div class="side-imgs">
+      <img src="WhatsApp Image 2025-07-15 at 09.52.07.jpeg" alt="Chef preparing pasta">
+      <img src="WhatsApp Image 2025-07-15 at 09.52.07.jpeg" alt="Roberto’s Cellar seating area">
     </div>
-    <div class="footer-bottom">
-      <p>48 Roberto Ave, Nairobi, KE 00400</p>
-      <p>© 2025 Roberto’s. All rights reserved</p>
-    </div>
-  </footer>
+  </div>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  <nav class="hero-nav">
+    <a href="market.html">Roberto’s Market <span>→</span></a>
+    <a href="cellar.html">Roberto’s Cellar <span>→</span></a>
+    <a href="restaurant.html">Restaurant <span>→</span></a>
+    <a href="order.html">Order Online <span>→</span></a>
+  </nav>
+</section>
+<h1 class="page-title">Our Events</h1>
+  <div id="posters-container"></div>
 
-    const supabase = createClient(
-      'https://hdukbuwmezqyxzsqgqff.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo'
-    );
+  <!-- 1) Load the UMD Supabase script so window.supabase is defined -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
+  
+  <!-- 2) Then your application code -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize your Supabase client
+      const SUPABASE_URL     = 'https://hdukbuwmezqyxzsqgqff.supabase.co';
+      const SUPABASE_ANON_KEY= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkdWtidXdtZXpxeXh6c3FncWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0ODU5ODAsImV4cCI6MjA2NTA2MTk4MH0.xxyb5u5cvYPS6LvVD73UJDdVe8nhBGNdS6kmP3hPyYo';
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // SEARCH LOGIC
-    const searchInput = document.getElementById('product-search');
-    const resultsBox = document.getElementById('search-results');
+      // Fetch and render posters
+      const loadPosters = async () => {
+        const { data, error } = await supabase
+          .from('events')
+          .select('id, image_path')
+          .order('created_at', { ascending: false });
 
-    searchInput.addEventListener('input', async (e) => {
-      const term = e.target.value.trim();
-      if (term.length < 2) {
-        resultsBox.style.display = 'none';
-        resultsBox.innerHTML = '';
-        return;
-      }
-      const { data, error } = await supabase
-        .from('products')
-        .select('id, name, retail_price, image_url')
-        .ilike('name', `%${term}%`);
-      if (error) {
-        console.error(error);
-        resultsBox.style.display = 'none';
-        return;
-      }
-      if (!data.length) {
-        resultsBox.innerHTML = '<div class="result-item">No products found.</div>';
-      } else {
-        resultsBox.innerHTML = data.map(prod => `
-          <div class="result-item" onclick="window.location='product.html?id=${prod.id}'">
-            <img src="${prod.image_url || 'placeholder.png'}" alt="${prod.name}">
-            <div>
-              <strong>${prod.name}</strong><br>
-              Ksh ${prod.retail_price || 'N/A'}
-            </div>
-          </div>
-        `).join('');
-      }
-      resultsBox.style.display = 'block';
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-box')) {
-        resultsBox.style.display = 'none';
-      }
-    });
-
-    // POPULAR PRODUCTS
-    async function loadPopularProducts() {
-      const grid = document.getElementById('popular-grid');
-      grid.innerHTML = '<p>Loading...</p>';
-      const { data: popularList, error: popError } = await supabase
-        .from('PopularProduct')
-        .select('*');
-      if (popError || !popularList?.length) {
-        grid.innerHTML = '<p>No popular products found.</p>';
-        return;
-      }
-      const products = [];
-      for (const item of popularList) {
-        const { data: product, error: prodErr } = await supabase
-          .from('products')
-          .select('id, name, retail_price, image_url')
-          .eq('id', item.product_id)
-          .single();
-        if (prodErr || !product) {
-          console.error(`Failed to load product ID ${item.product_id}`);
-        } else {
-          products.push(product);
+        if (error) {
+          console.error('Error loading events:', error);
+          return;
         }
-      }
-      grid.innerHTML = '';
-      products.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-          <a href="product.html?id=${prod.id}">
-            <img src="${prod.image_url}" alt="${prod.name}">
-            <h3>${prod.name}</h3>
-          </a>
-          <div class="price-row">
-            <span>Ksh ${prod.retail_price}</span>
-            <button class="add-btn"><i class="fas fa-cart-shopping"></i> Add</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
 
-    // CAROUSELS (restore this!)
-    async function loadCategoryCarousel(categoryId, containerId) {
-      const carousel = document.getElementById(containerId);
-      carousel.innerHTML = '<p>Loading...</p>';
-      const { data: products, error } = await supabase
-        .from('products')
-        .select('id, name, retail_price, image_url')
-        .eq('general_category', categoryId);
-      if (error || !products?.length) {
-        console.error(`Failed to load category ${categoryId}:`, error);
-        carousel.innerHTML = '<p>No products found.</p>';
-        return;
-      }
-      carousel.innerHTML = '';
-      products.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = 'carousel-item';
-        card.innerHTML = `
-          <a href="product.html?id=${prod.id}">
-            <img src="${prod.image_url}" alt="${prod.name}" />
-            <h3>${prod.name}</h3>
-          </a>
-          <div class="price-row">
-            <span>Ksh ${prod.retail_price}</span>
-            <button class="add-btn"><i class="fas fa-cart-shopping"></i> Add</button>
-          </div>
-        `;
-        carousel.appendChild(card);
-      });
-    }
+        const container = document.querySelector('#posters-container');
+        container.innerHTML = '';
 
-    window.addEventListener('DOMContentLoaded', () => {
-      loadPopularProducts();
-      loadCategoryCarousel(6, 'cheese-carousel');
-      loadCategoryCarousel(3, 'pasta-carousel');
-      loadCategoryCarousel(2, 'confectionery-carousel');
-      loadCategoryCarousel(4, 'wines-carousel');
-      loadCategoryCarousel(5, 'spirit-carousel');
+        data.forEach(evt => {
+          // build public URL
+          const { publicURL, error: urlErr } = supabase
+            .storage
+            .from('posters')
+            .getPublicUrl(evt.image_path);
+
+          if (urlErr) {
+            console.error('URL error:', urlErr);
+            return;
+          }
+
+          // create card
+          const card = document.createElement('div');
+          card.className = 'poster-card';
+          card.innerHTML = `
+            <div class="corner top-left"></div>
+            <div class="corner top-right"></div>
+            <img src="${publicURL}" alt="Event Poster">
+            <div class="corner bottom-left"></div>
+            <div class="corner bottom-right"></div>
+          `;
+          container.appendChild(card);
+        });
+      };
+
+      // Initial load
+      await loadPosters();
     });
-
-    // CART LOGIC
-    const cartIcon = document.querySelector('.fa-cart-shopping');
-    const body = document.body;
-    let cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    const cartPanel = document.createElement('div');
-    cartPanel.className = 'cart-panel';
-    cartPanel.innerHTML = `
-      <div class="cart-header">
-        <h2>Your Cart</h2>
-        <button class="cart-close" onclick="cartPanel.classList.remove('open')">&times;</button>
-      </div>
-      <div id="cart-items"></div>
-      <div class="cart-total">
-        <span>Total:</span><span id="cart-total-price">Ksh 0</span>
-      </div>
-      <div class="cart-actions">
-        <a href="cart.html" class="view-cart-btn">View Cart</a>
-      </div>
-    `;
-    body.appendChild(cartPanel);
-
-    const cartWrapper = document.createElement('div');
-    cartWrapper.className = 'cart-wrapper';
-    cartIcon.parentNode.insertBefore(cartWrapper, cartIcon);
-    cartWrapper.appendChild(cartIcon);
-
-    const cartCount = document.createElement('div');
-    cartCount.className = 'cart-count';
-    cartWrapper.appendChild(cartCount);
-
-    function updateCartCount() {
-      cartCount.textContent = cartItems.reduce((sum, item) => sum + item.qty, 0);
-    }
-
-    function renderCart() {
-      const container = document.getElementById('cart-items');
-      const totalPriceEl = document.getElementById('cart-total-price');
-      container.innerHTML = '';
-      let total = 0;
-      cartItems.forEach(item => {
-        const itemTotal = item.price * item.qty;
-        total += itemTotal;
-        const itemEl = document.createElement('div');
-        itemEl.className = 'cart-item';
-        itemEl.innerHTML = `
-          <img src="${item.img}" alt="${item.name}">
-          <div class="cart-item-details">
-            <h4>${item.name}</h4>
-            <div class="quantity">
-              <button onclick="updateQty('${item.name}', -1)">–</button>
-              <span>${item.qty}</span>
-              <button onclick="updateQty('${item.name}', 1)">+</button>
-            </div>
-            <span class="item-subtotal">Ksh ${itemTotal}</span>
-          </div>
-          <button class="remove-item" onclick="removeFromCart('${item.name}')">
-            <i class="fas fa-trash"></i>
-          </button>
-        `;
-        container.appendChild(itemEl);
-      });
-      totalPriceEl.textContent = `Ksh ${total}`;
-    }
-
-    document.addEventListener('click', (e) => {
-      if (e.target.closest('.add-btn')) {
-        const card = e.target.closest('.product-card, .carousel-item');
-        const name = card.querySelector('h3').innerText;
-        const price = parseInt(card.querySelector('.price-row span').innerText.replace('Ksh ', ''));
-        const img = card.querySelector('img').src;
-        const existing = cartItems.find(item => item.name === name);
-        if (existing) {
-          existing.qty += 1;
-        } else {
-          cartItems.push({ name, price, img, qty: 1 });
-        }
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        updateCartCount();
-        renderCart();
-      }
-    });
-    document.addEventListener('click', (e) => {
-  if (e.target.closest('.cart-close')) {
-    document.querySelector('.cart-panel').classList.remove('open');
-  }
-});
-
-
-    cartIcon.addEventListener('click', () => {
-      cartPanel.classList.toggle('open');
-      renderCart();
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!cartPanel.contains(e.target) && !cartIcon.contains(e.target)) {
-        cartPanel.classList.remove('open');
-      }
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      updateCartCount();
-      renderCart();
-    });
-
-    window.toggleMode = function(mode) {
-      const buttons = document.querySelectorAll(".switch-buttons button");
-      buttons.forEach(btn => btn.classList.remove("active"));
-      if (mode === 'market') {
-        buttons[0].classList.add("active");
-      } else {
-        buttons[1].classList.add("active");
-      }
-    }
   </script>
-  <nav class="mobile-nav">
-  <button class="close-btn">&times;</button>
-  <ul>
-    <li><a href="#">Cellar</a></li>
-    <li><a href="#">Cheeses</a></li>
-    <li><a href="#">Cold Cuts</a></li>
-    <li><a href="#">Dry goods</a></li>
-    <li><a href="#">Machinery</a></li>
-    <li><a href="#">Cutlery</a></li>
-    <li><a href="#">Detergents</a></li>
-  </ul>
-</nav>
-<script>
-  document.querySelector('.mobile-nav-toggle').addEventListener('click', () => {
-  document.querySelector('.mobile-nav').classList.add('open');
-});
 
-document.querySelector('.mobile-nav .close-btn').addEventListener('click', () => {
-  document.querySelector('.mobile-nav').classList.remove('open');
-});
-
-</script>
 </body>
 </html>
